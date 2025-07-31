@@ -5,7 +5,7 @@ import axios from "axios";
 import Markdown from "react-markdown";
 
 const Home = () => {
-  const [code, setCode] = useState("// Paste your DSA code here");
+  const [code, setCode] = useState("");
   const [Feedback, setFeedback] = useState(``);
   const [Complexity, setComplexity] = useState(``);
   const [Optimization, setOptimization] = useState(``);
@@ -24,9 +24,12 @@ const Home = () => {
       instruction = "Suggest optimization tips for this code";
 
     const prompt = `${instruction}\n\n${code}`;
-    const response = await axios.post("https://algoaid.onrender.com/ai/get-review", {
-      code: prompt,
-    });
+    const response = await axios.post(
+      "https://algoaid.onrender.com/ai/get-review",
+      {
+        code: prompt,
+      }
+    );
 
     console.log(response.data);
 
@@ -83,7 +86,10 @@ const Home = () => {
         </div> */}
 
         <div className="p-4 max-h-[400px] rounded-2xl w-[38%] bg-slate-100 ">
-          <div  id="chat-container" className="mb-4 h-[300px] overflow-scroll scrollbar-hidden bg-white p-4 rounded shadow">
+          <div
+            id="chat-container"
+            className="mb-4 h-[300px] overflow-scroll scrollbar-hidden bg-white p-4 rounded shadow"
+          >
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -93,8 +99,24 @@ const Home = () => {
                     : "text-left text-green-700"
                 }`}
               >
-                <p className="inline-block  p-2 rounded bg-gray-200">
-                  <Markdown>{msg.text}</Markdown>
+                <p
+                  className={`inline-block max-w-[85%] break-words p-2 rounded overflow-auto ${
+                    msg.role === "user"
+                      ? "bg-blue-100 text-blue-700"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  <Markdown
+                    components={{
+                      pre: ({ node, ...props }) => (
+                        <pre className="overflow-x-auto  bg-gray-800 text-white p-2 rounded my-2 text-sm">
+                          <code {...props} />
+                        </pre>
+                      ),
+                    }}
+                  >
+                    {msg.text}
+                  </Markdown>
                 </p>
               </div>
             ))}

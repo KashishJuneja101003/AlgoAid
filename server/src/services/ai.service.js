@@ -7,8 +7,8 @@ const model = genAI.getGenerativeModel({
     systemInstruction:`Analyze the code like you're an experienced developer.
     Provide the feedback neat and clean with proper spacing with emoticons.
     Separate each section with lines and give extra newlines before starting new section. Bold heading of new section. 
-    Tags should not be printed.
-    Your response should be crisp and clear`,
+    Tags should not be printed. !important
+    Your response should be crisp and clear and yet friendly`,
 })
 
 
