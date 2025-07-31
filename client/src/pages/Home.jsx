@@ -24,7 +24,7 @@ const Home = () => {
       instruction = "Suggest optimization tips for this code";
 
     const prompt = `${instruction}\n\n${code}`;
-    const response = await axios.post("http://localhost:3000/ai/get-review", {
+    const response = await axios.post("https://algoaid.onrender.com/ai/get-review", {
       code: prompt,
     });
 
@@ -44,7 +44,7 @@ const Home = () => {
     setInput("");
     try {
       const response = await axios.post(
-        "http://localhost:3000/ai/gemini-chat",
+        "https://algoaid.onrender.com/ai/gemini-chat",
         {
           prompt: input,
         }
