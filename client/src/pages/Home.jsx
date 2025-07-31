@@ -1,0 +1,190 @@
+import React, { useState } from "react";
+import LanguageSelector from "../components/LanguageSelector";
+import CodeEditor from "../components/CodeEditor";
+import axios from "axios";
+import Markdown from "react-markdown";
+
+const Home = () => {
+  const [code, setCode] = useState("// Paste your DSA code here");
+  const [Feedback, setFeedback] = useState(``);
+  const [Complexity, setComplexity] = useState(``);
+  const [Optimization, setOptimization] = useState(``);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  async function getFeedback(type) {
+    let instruction = "";
+
+    if (type == "feedback")
+      instruction =
+        "Give feedback on the following DSA code: Writing style, Readability, Cleanliness, Comments etc";
+    else if (type === "complexity")
+      instruction = "Analyze time and space complexity of the following code";
+    else if (type === "optimization")
+      instruction = "Suggest optimization tips for this code";
+
+    const prompt = `${instruction}\n\n${code}`;
+    const response = await axios.post("http://localhost:3000/ai/get-review", {
+      code: prompt,
+    });
+
+    console.log(response.data);
+
+    if (type === "feedback") setFeedback(response.data);
+    else if (type === "complexity") setComplexity(response.data);
+    else if (type === "optimization") setOptimization(response.data);
+  }
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = { role: "user", text: input };
+    setMessages((prev) => [...prev, userMessage]);
+
+    setInput("");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/ai/gemini-chat",
+        {
+          prompt: input,
+        }
+      );
+
+      const botMessage = { role: "bot", text: response.data };
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "Error: " + error.message },
+      ]);
+    }
+
+    setTimeout(() => {
+      const container = document.getElementById("chat-container");
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 100); // Slight delay to let new message render
+  };
+
+  return (
+    <div className="p-4">
+      <h1 className="text-3xl font-semibold text-white text-center mb-0">
+        AlgoAid
+      </h1>
+      <div className="mt-3 flex gap-5">
+        <CodeEditor code={code} setCode={setCode} />
+
+        {/* <div className="bg-[#1F2937] border-2 p-2 text-white rounded-2xl border-white w-[40%]">
+          <div className="ali">
+            <h2 className="text-lg font-semibold text-slate-50 mb-2">Chat with Gemini</h2>
+          </div>
+          <hr />
+        </div> */}
+
+        <div className="p-4 max-h-[400px] rounded-2xl w-[38%] bg-slate-100 ">
+          <div  id="chat-container" className="mb-4 h-[300px] overflow-scroll scrollbar-hidden bg-white p-4 rounded shadow">
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`mb-2 ${
+                  msg.role === "user"
+                    ? "text-right text-blue-700"
+                    : "text-left text-green-700"
+                }`}
+              >
+                <p className="inline-block  p-2 rounded bg-gray-200">
+                  <Markdown>{msg.text}</Markdown>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-2">
+            <input
+              className="flex-grow border p-2 rounded-l"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder="Ask Gemini something..."
+            />
+            <button
+              className="bg-blue-600 text-white px-4 rounded-xl"
+              onClick={handleSend}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex mt-3 gap-5 justify-between">
+        {/* Response */}
+        <div className="bg-[#1D3235] w-[33%] rounded-2xl p-2 border-2 border-green-800 gap-2">
+          <div className="flex justify-between">
+            <h2 className="text-lg font-semibold text-slate-50 mb-2">
+              Feedback
+            </h2>
+            <button
+              onClick={() => getFeedback("feedback")}
+              className="bg-emerald-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+            >
+              Get Feedback
+            </button>
+          </div>
+          <hr style={{ color: "green" }} />
+          <div className="mt-2 max-h-100 overflow-auto scrollbar-hidden text-gray-300">
+            <Markdown>{Feedback}</Markdown>
+          </div>
+        </div>
+
+        {/* Complexity Analysis */}
+
+        <div className="bg-[#1F2D48] w-[33%] rounded-2xl p-2 border-2 border-sky-800 gap-2">
+          <div className="flex justify-between">
+            <h2 className="text-lg font-semibold text-slate-50 mb-2">
+              Analyse Complexity
+            </h2>
+            <button
+              onClick={() => getFeedback("complexity")}
+              className="bg-sky-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+            >
+              Analyse
+            </button>
+          </div>
+          <hr style={{ color: "skyblue" }} />
+          <div className="mt-2 max-h-100 overflow-auto scrollbar-hidden  text-gray-300">
+            <Markdown>{Complexity}</Markdown>
+          </div>
+        </div>
+
+        {/* Optimization */}
+
+        <div className="bg-[#232A46] w-[33%] rounded-2xl p-2 border-2 border-purple-800 gap-2">
+          <div className="flex justify-between">
+            <h2 className="text-lg text-slate-50 font-semibold mb-2">
+              Optimization
+            </h2>
+            <button
+              onClick={() => getFeedback("optimization")}
+              className="bg-purple-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+            >
+              Optimise
+            </button>
+          </div>
+          <hr style={{ color: "purple" }} />
+          <div className="mt-2 max-h-100 overflow-auto scrollbar-hidden  text-gray-300">
+            <Markdown>{Optimization}</Markdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
