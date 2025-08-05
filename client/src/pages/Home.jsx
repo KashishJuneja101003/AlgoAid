@@ -77,7 +77,7 @@ const Home = () => {
       <h1 className="text-3xl font-semibold text-white text-center mb-0">
         AlgoAid
       </h1>
-      <div className="mt-3x space-y-3 md:flex gap-5">
+      <div className="mt-3 space-y-3 md:flex gap-5">
         <CodeEditor code={code} setCode={setCode} />
 
         {/* <div className="bg-[#1F2937] border-2 p-2 text-white rounded-2xl border-white w-[40%]">
