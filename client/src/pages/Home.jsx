@@ -138,7 +138,7 @@ const Home = () => {
               placeholder="Ask Gemini something..."
             />
             <button
-              className="bg-blue-600 text-white px-4 rounded-xl"
+              className="bg-blue-600 active:scale-90 cursor-pointer text-white px-4 rounded-xl"
               onClick={handleSend}
             >
               Send
@@ -156,7 +156,7 @@ const Home = () => {
             </h2>
             <button
               onClick={() => getFeedback("feedback")}
-              className="bg-emerald-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+              className="bg-emerald-500 active:scale-90 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
             >
               Get Feedback
             </button>
@@ -176,7 +176,7 @@ const Home = () => {
             </h2>
             <button
               onClick={() => getFeedback("complexity")}
-              className="bg-sky-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+              className="bg-sky-500 active:scale-90 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
             >
               Analyse
             </button>
@@ -196,7 +196,7 @@ const Home = () => {
             </h2>
             <button
               onClick={() => getFeedback("optimization")}
-              className="bg-purple-500 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
+              className="bg-purple-500 active:scale-90 text-white mb-1.5 cursor-pointer rounded-2xl px-2"
             >
               Optimise
             </button>
