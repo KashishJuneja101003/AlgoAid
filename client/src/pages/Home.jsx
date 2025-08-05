@@ -75,7 +75,7 @@ const Home = () => {
       <h1 className="text-3xl font-semibold text-white text-center mb-0">
         AlgoAid
       </h1>
-      <div className="mt-3 flex gap-5">
+      <div className="mt-3 space-y-3 md:flex gap-5">
         <CodeEditor code={code} setCode={setCode} />
 
         {/* <div className="bg-[#1F2937] border-2 p-2 text-white rounded-2xl border-white w-[40%]">
@@ -85,7 +85,7 @@ const Home = () => {
           <hr />
         </div> */}
 
-        <div className="p-4 max-h-[400px] rounded-2xl w-[38%] bg-slate-100 ">
+        <div className="p-4 max-h-[400px] rounded-2xl md:w-[38%] bg-slate-100 ">
           <div
             id="chat-container"
             className="mb-4 h-[300px] overflow-scroll scrollbar-hidden bg-white p-4 rounded shadow"

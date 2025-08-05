@@ -14,7 +14,7 @@ const CodeEditor = ({ code, setCode }) => {
         language={language}
         theme="vs-dark"
         value={code}
-        defaultValue={`// Write your ${language} code here`}
+        defaultValue={`// Write your code here`}
         onChange={(e) => setCode(e)}
         options={{
           scrollBeyondLastLine: false,
