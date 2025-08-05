@@ -12,6 +12,8 @@ const Home = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  const formatResponse = (text) => text.replace(/<br\s*\/?>/gi, '\n');
+
   async function getFeedback(type) {
     let instruction = "";
 
@@ -33,9 +35,9 @@ const Home = () => {
 
     console.log(response.data);
 
-    if (type === "feedback") setFeedback(response.data);
-    else if (type === "complexity") setComplexity(response.data);
-    else if (type === "optimization") setOptimization(response.data);
+    if (type === "feedback") setFeedback(formatResponse(response.data));
+    else if (type === "complexity") setComplexity(formatResponse(response.data));
+    else if (type === "optimization") setOptimization(formatResponse(response.data));
   }
 
   const handleSend = async () => {
@@ -53,7 +55,7 @@ const Home = () => {
         }
       );
 
-      const botMessage = { role: "bot", text: response.data };
+      const botMessage = { role: "bot", text: formatResponse(response.data) };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       setMessages((prev) => [
@@ -75,7 +77,7 @@ const Home = () => {
       <h1 className="text-3xl font-semibold text-white text-center mb-0">
         AlgoAid
       </h1>
-      <div className="mt-3 space-y-3 md:flex gap-5">
+      <div className="mt-3x space-y-3 md:flex gap-5">
         <CodeEditor code={code} setCode={setCode} />
 
         {/* <div className="bg-[#1F2937] border-2 p-2 text-white rounded-2xl border-white w-[40%]">
