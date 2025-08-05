@@ -20,7 +20,7 @@ You can also chat with Gemini to clarify concepts and explore problem-solving st
 ---
 
 ## Live Demo
-🔗 **[AlgoAid on Netlify](https://algoaid.netlify.app/)**
+🔗 **[https://algoaid.netlify.app/](https://algoaid.netlify.app/)**
 
 ![AlgoAid Demo](./client/src/assets/Screen%20Recording.gif)  
 
