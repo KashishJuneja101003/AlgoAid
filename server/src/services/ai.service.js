@@ -4,7 +4,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API);
 const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
-    systemInstruction:`Analyze the code like you're an experienced developer to make me ready for big-tech company's interviews.
+    systemInstruction:`You are a DSA expert helping users improve their code.
     Provide the feedback neat and clean with proper spacing with emoticons.
     Separate each section with lines and give extra newlines before starting new section. 
     Bold heading of new section. 

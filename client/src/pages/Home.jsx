@@ -12,18 +12,21 @@ const Home = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  const formatResponse = (text) => text.replace(/<br\s*\/?>/gi, '\n');
+  const formatResponse = (text) => text.replace(/<br\s*\/?>/gi, "\n");
 
   async function getFeedback(type) {
     let instruction = "";
 
-    if (type == "feedback")
+    if (type === "feedback") {
       instruction =
-        "Give feedback on the following DSA code: Writing style, Readability, Cleanliness, Comments etc";
-    else if (type === "complexity")
-      instruction = "Analyze time and space complexity of the following code";
-    else if (type === "optimization")
-      instruction = "Suggest optimization tips for this code";
+        "Evaluate the given DSA code based on correctness, code style, readability, cleanliness, and use of comments with a brief explanation.";
+    } else if (type === "complexity") {
+      instruction =
+        "Analyze the time and space complexity of the following code with a brief explanation.";
+    } else if (type === "optimization") {
+      instruction =
+        "Suggest possible optimizations to improve the efficiency of this code in terms of time and space with a brief explanation.";
+    }
 
     const prompt = `${instruction}\n\n${code}`;
     const response = await axios.post(
@@ -36,8 +39,10 @@ const Home = () => {
     console.log(response.data);
 
     if (type === "feedback") setFeedback(formatResponse(response.data));
-    else if (type === "complexity") setComplexity(formatResponse(response.data));
-    else if (type === "optimization") setOptimization(formatResponse(response.data));
+    else if (type === "complexity")
+      setComplexity(formatResponse(response.data));
+    else if (type === "optimization")
+      setOptimization(formatResponse(response.data));
   }
 
   const handleSend = async () => {
